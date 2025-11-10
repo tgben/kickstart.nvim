@@ -45,51 +45,16 @@ vim.o.inccommand = 'split' -- Preview substitutions live
 vim.keymap.set('n', '<leader>pv', vim.cmd.Ex)
 vim.keymap.set('n', '<C-s>', vim.cmd.w)
 
-vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
-vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
+-- vim.keymap.set('n', '<leader>gs', vim.cmd.Git)
+-- vim.keymap.set('n', '<leader>u', vim.cmd.UndotreeToggle)
 
---
--- Sync clipboard between OS and Neovim.
--- vim.schedule(function()
---   vim.o.clipboard = 'unnamedplus'
--- end)
-
--- NOTE: DISABLED KEYMAPS
-
--- Clear highlights on search when pressing <Esc> in normal mode
---  See `:help hlsearch`
--- vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Diagnostic keymaps
--- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
--- vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
--- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
--- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
--- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
--- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
--- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
--- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
-
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
+-- center the line on the screen when jumping by half pages
+vim.keymap.set('n', '<C-d>', '<C-d>zz')
+vim.keymap.set('n', '<C-u>', '<C-u>zz')
 
 -- NOTE: KEYMAPS
 
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.hl.on_yank()`
+-- Highlight when yanking text
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -100,8 +65,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 
 -- NOTE: PLUGINS
 
--- [[ Install `lazy.nvim` plugin manager ]]
---    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
+-- Install `lazy.nvim` plugin manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -120,51 +84,46 @@ rtp:prepend(lazypath)
 
 require('lazy').setup({
   { 'mbbill/undotree' },
-  {
-    'ThePrimeagen/harpoon',
-    branch = 'harpoon2',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      local harpoon = require 'harpoon'
+  { 'NMAC427/guess-indent.nvim' },
+  { 'numToStr/Comment.nvim' },
+  { 'ThePrimeagen/vim-be-good' },
 
-      vim.keymap.set('n', '<leader>a', function()
-        harpoon:list():add()
-      end)
-      vim.keymap.set('n', '<C-e>', function()
-        harpoon.ui:toggle_quick_menu(harpoon:list())
-      end)
-
-      vim.keymap.set('n', '<C-h>', function()
-        harpoon:list():select(1)
-      end)
-      vim.keymap.set('n', '<C-t>', function()
-        harpoon:list():select(2)
-      end)
-      vim.keymap.set('n', '<C-n>', function()
-        harpoon:list():select(3)
-      end)
-      vim.keymap.set('n', '<C-l>', function()
-        harpoon:list():select(4)
-      end)
-
-      -- Toggle previous & next buffers stored within Harpoon list
-      -- vim.keymap.set('n', '<C-S-P>', function()
-      --   harpoon:list():prev()
-      -- end)
-      -- vim.keymap.set('n', '<C-S-N>', function()
-      --   harpoon:list():next()
-      -- end)
-    end,
-  },
-  {
-    'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-    opts = {},
-  },
-
-  {
-    'numToStr/Comment.nvim',
-    opts = {},
-  },
+  -- {
+  --   'ThePrimeagen/harpoon',
+  --   branch = 'harpoon2',
+  --   dependencies = { 'nvim-lua/plenary.nvim' },
+  --   config = function()
+  --     local harpoon = require 'harpoon'
+  --
+  --     vim.keymap.set('n', '<leader>a', function()
+  --       harpoon:list():add()
+  --     end)
+  --     vim.keymap.set('n', '<C-e>', function()
+  --       harpoon.ui:toggle_quick_menu(harpoon:list())
+  --     end)
+  --
+  --     vim.keymap.set('n', '<C-h>', function()
+  --       harpoon:list():select(1)
+  --     end)
+  --     vim.keymap.set('n', '<C-t>', function()
+  --       harpoon:list():select(2)
+  --     end)
+  --     vim.keymap.set('n', '<C-n>', function()
+  --       harpoon:list():select(3)
+  --     end)
+  --     vim.keymap.set('n', '<C-l>', function()
+  --       harpoon:list():select(4)
+  --     end)
+  --
+  --     -- Toggle previous & next buffers stored within Harpoon list
+  --     -- vim.keymap.set('n', '<C-S-P>', function()
+  --     --   harpoon:list():prev()
+  --     -- end)
+  --     -- vim.keymap.set('n', '<C-S-N>', function()
+  --     --   harpoon:list():next()
+  --     -- end)
+  --   end,
+  -- },
 
   {
     'lewis6991/gitsigns.nvim',
@@ -192,6 +151,7 @@ require('lazy').setup({
       update_debounce = 100,
     },
   },
+
   {
     'folke/which-key.nvim',
     event = 'VimEnter',
@@ -272,22 +232,22 @@ require('lazy').setup({
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 
+      -- NOTE: file telescope keybinds. Not related to LSP
       local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
-      vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-      vim.keymap.set('n', '<leader>ps', function()
-        builtin.grep_string { search = vim.fn.input 'Grep > ' }
-      end)
+      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
+      -- vim.keymap.set('n', '<C-p>', builtin.git_files, {})
+      -- vim.keymap.set('n', '<leader>ps', function()
+      --   builtin.grep_string { search = vim.fn.input 'Grep > ' }
+      -- end)
 
       -- vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       -- vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      -- vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       -- vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       -- vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      -- vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       -- vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       -- vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
-      -- vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       -- vim.keymap.set('n', '<leader>/', function()
       --   builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
@@ -338,11 +298,11 @@ require('lazy').setup({
           map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
           map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
           map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
+          -- map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
           -- map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
           -- map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
           -- map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-          -- map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-          -- map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
           -- map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
 
           ---@param client vim.lsp.Client
